@@ -1,11 +1,14 @@
-import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtPayload } from './jwt-payload.interface';
+
+import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+
+import { config } from '@config';
+
+import { JwtPayload } from './jwt-payload.interface';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
-require('dotenv/config');
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_SECRET,
+      secretOrKey: config.PG_PW,
     });
   }
 
